@@ -1,24 +1,21 @@
 <?php
-    include("conexion.php");
-
-    $nameValidation = isset($_POST['nombre']) && !empty($_POST['nombre']);
+    echo "1";
+    include("connection.php");
+    echo "2";
+    $nameValidation = isset($_POST['name']) && !empty($_POST['name']);
     $passValidation = isset($_POST['pass']) && !empty($_POST['pass']);
-
-
-
+    echo "3";
     if ($nameValidation && $passValidation) {
-        $con = mysql_connect($host, $user, $pass) or die('Problemas al conectar');
-        mysql_select_db($db, $con) or die('Problemas al conectar con la db');
+        $mysqli = new mysqli($host, $user, $pass, $db);
         
-        $estandar = mysql_query(
-            "SELECT *\
-            FROM codigo\
-            WHERE nombre='$_POST[nombre]' AND pass='$_POST[pass]'",
-            $con
+        $res = $mysqli->query(
+            "SELECT *
+            FROM user
+            WHERE name='$_POST[name]' AND pass='$_POST[pass]'"
         );
     }
-    
-    if ($row=mysql_fetch_array($estandar))	{
+    echo "4";
+    if ($res->fetch_assoc())	{
     	header('location: https://www.utp.edu.pe/');
     } else {
     	echo '<center>';
